@@ -20,14 +20,17 @@ int _printf(const char *format, ...)
 		}
 		else
 		{
-			format ++;
+			format++;
 			if (*format == '\0')
+			{
 				break;
-			if (*format == %)
+			}
+		if (*format == '%')
+			{
 				write(1, format, 1);
-			chara_print++;
-		}
-		else if (*format =='c')
+				chara_print++;
+			}
+		else if (*format == 'c')
 		{
 			char c = va_arg(list_of_args, int);
 			write(1 , &c, 1);
@@ -43,6 +46,9 @@ int _printf(const char *format, ...)
 			write(1, str, str_len);
 			chara_print += str_len;
 		}
+		
+		}
+		format++;
 	}
 
 	va_end(list_of_args);
