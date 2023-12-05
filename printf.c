@@ -1,5 +1,12 @@
-<<<<<<< HEAD
 #include "main.h"
+#include <string.h>
+
+/**
+ * _printf - function that creates a custom printf
+ * @format: the string specifier
+ *
+ * Return: 0
+ */
 
 int _printf(const char *format, ...)
 {
@@ -7,52 +14,32 @@ int _printf(const char *format, ...)
 
 	va_list list_of_args;
 
-	if (format == NULL)
+	if (!format)
 		return (-1);
-	
+
 	va_start(list_of_args, format);
-	
-	while(*format)
+
+
+	while (*format)
 	{
-		if(*format != '%')
-		{
-			write(1, format, 1);
-			chara_print++;
-		}
-		else
-		{
-			format++;
-			if (*format == '\0')
-			{
-				break;
-			}
-		if (*format == '%')
-			{
-				write(1, format, 1);
-				chara_print++;
-			}
+		if (*format != '%')
+			chara_print += write(1, format, 1);
+		else if (*(++format) == '%')
+			chara_print += write(1, format, 1);
 		else if (*format == 'c')
 		{
-			char c = va_arg(list_of_args, int);
-			write(1 , &c, 1);
-			chara_print++;
+			int c = va_arg(list_of_args, int);
+
+			chara_print += write(1, &c, 1);
 		}
 		else if (*format == 's')
 		{
-			char *str = va_arg(list_of_args, char*);
-			int str_len = 0;
+			char *str = va_arg(list_of_args, char *);
 
-			while (str[str_len] != '\0') /* to calculate the length of a sting */
-				str_len++;
-			write(1, str, str_len);
-			chara_print += str_len;
+			chara_print += write(1, str, strlen(str));
 		}
-		
-		}
-		format++;
 	}
 
 	va_end(list_of_args);
-
-	return chara_print;
+	return (chara_print);
 }
