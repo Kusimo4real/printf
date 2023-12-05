@@ -1,45 +1,46 @@
 #include "main.h"
-#include <string.h>
 
 /**
- * _printf - function that creates a custom printf
- * @format: the string specifier
- *
- * Return: 0
- */
-
+  * _printf - display text to stdout
+  * @format: string/text format
+  * Return: number of characters printed
+*/
 int _printf(const char *format, ...)
 {
-	int chara_print = 0;
+	spec specs[] = {
+		{'c', print_char}, {'s', print_string},
+		{'%', print_percent}, {'d', print_int},
+		{'i', print_int}, {'b', print_binary},
+		{' ', print_space}, {'u', print_unsigned},
+		{'o', print_octal}, {'x', print_hexadecimal},
+		{'X', print_hexadecimal_upper}, {'\0', print_space},
+		{'S', print_nonprintable},
+	};
+	int i, size, count = 0;
+	va_list args;
 
-	va_list list_of_args;
-
-	if (!format)
-		return (-1);
-
-	va_start(list_of_args, format);
-
-
+	va_start(args, format);
+	size = sizeof(specs) / sizeof(specs[0]);
 	while (*format)
 	{
 		if (*format != '%')
-			chara_print += write(1, format, 1);
-		else if (*(++format) == '%')
-			chara_print += write(1, format, 1);
-		else if (*format == 'c')
 		{
-			int c = va_arg(list_of_args, int);
-
-			chara_print += write(1, &c, 1);
+			count += _putchar(*format);
+			format++;
+			continue;
 		}
-		else if (*format == 's')
+		format++;
+
+		for (i = 0; i < size; i++)
 		{
-			char *str = va_arg(list_of_args, char *);
-
-			chara_print += write(1, str, strlen(str));
+			if (specs[i].type == *format)
+			{
+				count += specs[i].f(args);
+				break;
+			}
 		}
+		format++;
 	}
-
-	va_end(list_of_args);
-	return (chara_print);
+	va_end(args);
+	return (count);
 }
