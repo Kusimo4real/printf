@@ -1,24 +1,31 @@
 #include "main.h"
-#include <string.h>
 
 /**
- * print_string - prints a string
- * @lp: a variable argument list containing a string to be printed
- * @count: count number character
+ * _strlen - a function that returns the length of a string
+ * @str: string pointer
  *
- * Return: Nothing
+ * Return: 1
+ */
+int _strlen(char *str)
+{
+	int i;
+
+	for (i = 0; str[i] != 0; i++)
+		;
+	return (i);
+}
+
+/**
+ * _strlenc - strlen function for char pointer
+ * @str: char pointer
+ * Return: 1
  */
 
-void print_string(va_list lp, int *count)
+int _strlenc(const char *str)
 {
-	char *str;
+	int i;
 
-	str = va_arg(lp, char *);
-	if (!str)
-		_putchar('\0');
-	while (*str)
-	{
-		*count += _putchar(*str);
-		str++;
-	}
+	for (i = 0; str[i] != 0; i++)
+		;
+	return (i);
 }
